@@ -1,0 +1,57 @@
+/* StudentResult.css */
+.result-container {
+  background-color: #fff;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #6b21a8;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dropdown-wrapper {
+  margin-bottom: 20px;
+}
+
+.result-dropdown {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.result-table th,
+.result-table td {
+  border: 1px solid #e2e8f0;
+  padding: 12px;
+  text-align: center;
+}
+
+.result-table th {
+  background-color: #f3e8ff;
+  color: #4c1d95;
+}
+
+.result-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.result-table tr:h
+over {
+  background-color: #f3e8ff;
+}

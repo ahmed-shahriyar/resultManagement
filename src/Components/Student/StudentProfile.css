@@ -1,0 +1,23 @@
+.profile-container {
+ 
+  max-width: 800px;
+  margin: 40px auto;
+  color: black;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.profile-title {
+  font-size: 24px;
+  color: black;
+  margin-bottom: 16px;
+}
+
+.profile-info p {
+  margin: 6px 0;
+ color: black;
+
+}
+
