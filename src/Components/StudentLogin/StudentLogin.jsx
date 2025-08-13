@@ -7,6 +7,7 @@ import './StudentLogin.css';
 
 const StudentLogin = ({ onLogin }) => {
   const [studentId, setStudentId] = useState('');
+   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -58,6 +59,13 @@ const StudentLogin = ({ onLogin }) => {
           placeholder="Enter Student ID"
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
         <button type="submit">Login</button>
