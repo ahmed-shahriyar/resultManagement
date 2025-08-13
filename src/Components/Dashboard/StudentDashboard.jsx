@@ -1,40 +1,48 @@
-// StudentDashboard.jsx
-import React, { useState } from 'react';
-import { User, FileText } from 'lucide-react';
-import StudentResult from '../Student/StudentResult';
-import StudentProfile from '../Student/studentProfile';
+import React from 'react';
+import { Outlet, useParams, Link, useNavigate } from 'react-router-dom';
+import { User, FileText, LogOut } from 'lucide-react'; // icons
 import './StudentDashboard.css';
 
-const StudentDashboard = ({ studentId }) => {
-  const [activeTab, setActiveTab] = useState('profile');
+const StudentDashboard = () => {
+  const { studentId } = useParams();
+  const navigate = useNavigate();
 
-  const menuItems = [
-    { key: 'profile', label: 'Profile', icon: <User size={18} /> },
-    { key: 'result', label: 'Result', icon: <FileText size={18} /> },
-  ];
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/');
+  };
 
   return (
     <div className="dashboard-container">
-      <aside className="sidebar">
-        <h2 className="sidebar-title">Student Panel</h2>
-        <ul className="sidebar-menu">
-          {menuItems.map(item => (
-            <li key={item.key}>
-              <button
-                className={`sidebar-btn ${activeTab === item.key ? 'active' : ''}`}
-                onClick={() => setActiveTab(item.key)}
-              >
-                <span className="sidebar-icon">{item.icon}</span>
-                <span className="sidebar-label">{item.label}</span>
-              </button>
+      <aside className="dashboard-sidebar">
+        <div className="sidebar-header">
+          <h2>🎓 Student Panel</h2>
+          <p>ID: <span>{studentId}</span></p>
+        </div>
+        <nav className="dashboard-nav">
+          <ul>
+            <li>
+              <Link to="profile">
+                <User size={18} className="nav-icon" />
+                <span>Profile</span>
+              </Link>
             </li>
-          ))}
-        </ul>
+            <li>
+              <Link to="result">
+                <FileText size={18} className="nav-icon" />
+                <span>Result</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        <button className="logout-btn" onClick={handleLogout}>
+          <LogOut size={18} className="nav-icon" />
+          <span>Logout</span>
+        </button>
       </aside>
 
-      <main className="main-content">
-        {activeTab === 'profile' && <StudentProfile studentId={studentId} />}
-        {activeTab === 'result' && <StudentResult studentId={studentId} />}
+      <main className="dashboard-content">
+        <Outlet />
       </main>
     </div>
   );

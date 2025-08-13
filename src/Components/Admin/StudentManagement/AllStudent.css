@@ -1,0 +1,18 @@
+.all-students-container {
+  padding: 20px;
+}
+
+.search-input {
+  padding: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.student-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}

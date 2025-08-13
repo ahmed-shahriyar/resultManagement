@@ -1,0 +1,66 @@
+.result-management-container {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.result-management-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #4c1d95;
+  text-align: center;
+}
+
+.result-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-form input,
+.result-form select {
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+}
+
+.result-form button {
+  padding: 12px;
+  background-color: #4c1d95;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.result-form button:hover {
+  background-color: #6d28d9;
+}
+
+.student-marks-list {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.student-mark-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.student-mark-row input {
+  flex: 0 0 120px;
+  text-align: right;
+}

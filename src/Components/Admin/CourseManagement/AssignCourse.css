@@ -1,5 +1,5 @@
-.add-student-container {
-  max-width: 500px;
+.assign-course-container {
+  max-width: 600px;
   margin: 40px auto;
   padding: 30px;
   background-color: #fff;
@@ -8,36 +8,57 @@
   font-family: Arial, sans-serif;
 }
 
-.add-student-container h2 {
+.assign-course-container h2 {
   text-align: center;
-  margin-bottom: 20px;
   color: #4b0082;
+  margin-bottom: 20px;
 }
 
-.student-form {
+.assign-form {
   display: flex;
   flex-direction: column;
 }
 
-.student-form input {
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #bbb;
-  border-radius: 5px;
+.assign-form label {
+  margin: 10px 0 5px;
+  font-weight: bold;
 }
 
-.student-form button {
+.assign-form select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+}
+
+.course-checkboxes {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assign-form button {
   background-color: #4b0082;
   color: white;
   padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
+  margin-top: 20px;
   cursor: pointer;
 }
 
-.student-form button:hover {
+.assign-form button:hover {
   background-color: #370062;
 }
 

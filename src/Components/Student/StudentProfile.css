@@ -1,23 +1,49 @@
 .profile-container {
- 
-  max-width: 800px;
+  max-width: 600px;
   margin: 40px auto;
-  color: black;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 30px 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
 .profile-title {
-  font-size: 24px;
-  color: black;
-  margin-bottom: 16px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #4f46e5; /* Indigo */
+  text-align: center;
+  letter-spacing: 1.2px;
 }
 
 .profile-info p {
-  margin: 6px 0;
- color: black;
-
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 12px 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
 }
 
+.profile-info p strong {
+  display: inline-block;
+  width: 130px;
+  color: #6366f1; /* lighter Indigo */
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .profile-container {
+    margin: 20px 15px;
+    padding: 20px 25px;
+  }
+  
+  .profile-title {
+    font-size: 24px;
+  }
+
+  .profile-info p strong {
+    width: 110px;
+  }
+}

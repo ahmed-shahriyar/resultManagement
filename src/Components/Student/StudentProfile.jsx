@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom'; 
 import './StudentProfile.css';
-const StudentProfile = ({ studentId }) => {
+const StudentProfile = () => {
+  const { studentId } = useParams();
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/student/${studentId}`)
+    
+    axios.get(`http://localhost:5000/api/students/${studentId}`)
       .then(response => setProfile(response.data))
       .catch(error => console.error('Error loading profile:', error));
   }, [studentId]);
@@ -13,9 +16,10 @@ const StudentProfile = ({ studentId }) => {
   if (!profile) return <p>Loading profile...</p>;
 
   return (
-    <div className="student-container">
-      <h2 className="title">Student Profile</h2>
-      <div className="info">
+    
+    <div className="profile-container">
+      <h2 className="profile-title">Student Profile</h2>
+      <div className="profile-info">
         <p><strong>ID:</strong> {profile.ID}</p>
         <p><strong>Name:</strong> {profile.Name}</p>
         <p><strong>Date of Birth:</strong> {profile.DOB}</p>

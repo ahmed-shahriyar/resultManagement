@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf';
+import { useParams } from 'react-router-dom'; 
 import 'jspdf-autotable';
 import './StudentResult.css';
 
-const StudentResult = ({ studentId }) => {
+const StudentResult = () => {
+   const { studentId } = useParams();
   const [semester, setSemester] = useState('');
   const [semesters, setSemesters] = useState([]);
   const [results, setResults] = useState([]);
+useEffect(() => {
+  axios.get(`http://localhost:5000/api/semesters/${studentId}`)
+    .then(res => {
+      setSemesters(res.data);
+      console.log('Fetched results:', res.data);  // <-- inside then block
+    })
+    .catch(err => console.error('Semester load failed:', err));
+}, [studentId]);
 
-  useEffect(() => {
-    axios.get(`http://localhost/api/semesters/${studentId}`)
-      .then(res => setSemesters(res.data))
-      .catch(err => console.error('Semester load failed:', err));
-  }, [studentId]);
 
   useEffect(() => {
     if (semester) {
-      axios.get(`http://localhost/api/results/${studentId}?semester=${semester}`)
+      axios.get(`http://localhost:5000/api/result/${studentId}?semester=${semester}`)
         .then(res => setResults(res.data))
         .catch(err => console.error('Result fetch failed:', err));
     }
@@ -88,9 +93,10 @@ const StudentResult = ({ studentId }) => {
           onChange={e => setSemester(e.target.value)}
         >
           <option value="">-- Select Semester --</option>
-          {semesters.map((s, index) => (
-            <option key={index} value={s}>{s}</option>
-          ))}
+
+         {semesters.map((s, index) => (
+    <option key={index} value={s.semester}>{s.semester}</option>
+  ))}
         </select>
       </div>
 

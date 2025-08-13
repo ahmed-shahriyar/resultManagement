@@ -1,0 +1,83 @@
+/* IconsWithNavigation.css */
+
+
+
+.icons-container {
+  height: 100vh; /* full viewport height */
+  display: flex;
+   margin: 0;
+   
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow-x: hidden;
+  z-index: 2;
+}
+
+/* Abstract circles behind icons */
+.icons-container::before {
+  content: "";
+  position: absolute;
+  top: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 1;
+}
+
+.icons-container::after {
+  content: "";
+  position: absolute;
+  bottom: -150px;
+  right: -150px;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 1;
+}
+
+.icon-button {
+  cursor: pointer;
+  text-align: center;
+  outline: none;
+  user-select: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
+  border-radius: 16px;
+  width: 100px;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon-button:hover,
+.icon-button:focus {
+  transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.icon-label {
+  margin-top: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+/* Optional: make svg icons white */
+.icon-button svg {
+  stroke: white;
+}
