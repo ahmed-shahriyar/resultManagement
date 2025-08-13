@@ -1,6 +1,7 @@
 // TeacherResultManagement.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const TeacherResultManagement = ({ teacherId }) => {
   const [form, setForm] = useState({
@@ -14,7 +15,22 @@ const TeacherResultManagement = ({ teacherId }) => {
   const [students, setStudents] = useState([]);
   const [marks, setMarks] = useState({});
 
- 
+ useEffect(() => {
+  const fetchCourses = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/result/teacher/${teacherId}`);
+      const data = await res.json();
+      setCourses(data);
+    } catch (err) {
+      console.error('Failed to fetch courses:', err);
+    }
+  };
+
+  if (teacherId) {
+    fetchCourses();
+  }
+}, [teacherId]);
+
  
 
   const handleChange = e => {
