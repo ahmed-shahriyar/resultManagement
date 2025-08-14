@@ -1,29 +1,32 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet  } from 'react-router-dom';
+// App.jsx
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import AdminSidebar from './Components/Admin/Sidebar/AdminSidebar'
-import IconsWithNavigation from './Components/Admin/AdminRouting/IconsWithNavigation'
-import AdminDashboard from './Components/Dashboard/AdminDashboard'
-import TeacherDashboard from './Components/Dashboard/TeacherDashboard'
-import StudentDashboard from './Components/Dashboard/StudentDashboard'
-import AddStudent from './Components/Admin/StudentManagement/AddStudent'
-import AllStudent from './Components/Admin/StudentManagement/AllStudent'
-import AddTeacher from './Components/Admin/TeacherManagement/AddTeacher'
-import AllTeacher from './Components/Admin/TeacherManagement/AllTeacher'
-import AddCourse from './Components/Admin/CourseManagement/AddCourse'
-import AllCourse from './Components/Admin/CourseManagement/AllCourse'
-import AssignCourse from './Components/Admin/CourseManagement/AssignCourse'
-import TeacherLogin from './Components/Login/TeacherLogin'
-import TeacherProfile from './Components/Teacher/TeacherProfile'
-import TeacherResultManagement from './Components/Teacher/TeacherResultManagement'
-import TeacherCourses from './Components/Teacher/TeacherCourses'
-import StudentLogin from './Components/StudentLogin/StudentLogin'
-import StudentProfile from './Components/Student/StudentProfile'
-import StudentResult from './Components/Student/StudentResult'
-// Inline layout for admin with sidebar
+// Admin
+import AdminSidebar from './Components/Admin/Sidebar/AdminSidebar';
+import IconsWithNavigation from './Components/Admin/AdminRouting/IconsWithNavigation';
+import AdminDashboard from './Components/Dashboard/AdminDashboard';
+import AddStudent from './Components/Admin/StudentManagement/AddStudent';
+import AllStudent from './Components/Admin/StudentManagement/AllStudent';
+import AddTeacher from './Components/Admin/TeacherManagement/AddTeacher';
+import AllTeacher from './Components/Admin/TeacherManagement/AllTeacher';
+import AddCourse from './Components/Admin/CourseManagement/AddCourse';
+import AllCourse from './Components/Admin/CourseManagement/AllCourse';
+import AssignCourse from './Components/Admin/CourseManagement/AssignCourse';
+
+// Teacher
+import TeacherLogin from './Components/Login/TeacherLogin';
+import TeacherDashboard from './Components/Dashboard/TeacherDashboard';
+import TeacherProfile from './Components/Teacher/TeacherProfile';
+import TeacherResultManagement from './Components/Teacher/TeacherResultManagement';
+import TeacherCourses from './Components/Teacher/TeacherCourses';
+
+// Student
+import StudentLogin from './Components/StudentLogin/StudentLogin';
+import StudentDashboard from './Components/Dashboard/StudentDashboard';
+import StudentProfile from './Components/Student/StudentProfile';
+import StudentResult from './Components/Student/StudentResult';
+
+// Admin Layout
 const AdminLayout = () => (
   <div style={{ display: "flex" }}>
     <AdminSidebar />
@@ -33,17 +36,14 @@ const AdminLayout = () => (
   </div>
 );
 
-
 function App() {
-  
-
   return (
     <Router>
       <Routes>
-        {/* Landing with Icons */}
+        {/* Landing with role icons */}
         <Route path="/" element={<IconsWithNavigation />} />
 
-        {/* Admin Routes */}
+        {/* ==================== ADMIN ROUTES ==================== */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="add-student" element={<AddStudent />} />
@@ -55,24 +55,23 @@ function App() {
           <Route path="assign-course" element={<AssignCourse />} />
         </Route>
 
-        {/* Teacher Routes */}
-      {/* Teacher Dashboard */}
-<Route path="/teacher-dashboard/:teacherId" element={<TeacherDashboard />}>
-  <Route path="profile" element={<TeacherProfile />} />
-  <Route path="result" element={<TeacherResultManagement />} />
-  <Route path="course" element={<TeacherCourses />} />
-</Route>
+        {/* ==================== TEACHER ROUTES ==================== */}
+        <Route path="/teacher" element={<TeacherLogin />} />
+        <Route path="/teacher-dashboard/:teacherId" element={<TeacherDashboard />}>
+          <Route path="profile" element={<TeacherProfile />} />
+          <Route path="result" element={<TeacherResultManagement />} />
+          <Route path="course" element={<TeacherCourses />} />
+        </Route>
 
-{/* Student Dashboard */}
-<Route path="/student-dashboard/:studentId" element={<StudentDashboard />}>
-  <Route path="profile" element={<StudentProfile />} />
-  <Route path="result" element={<StudentResult />} />
-</Route>
-
+        {/* ==================== STUDENT ROUTES ==================== */}
+        <Route path="/student" element={<StudentLogin />} />
+        <Route path="/student-dashboard/:studentId" element={<StudentDashboard />}>
+          <Route path="profile" element={<StudentProfile />} />
+          <Route path="result" element={<StudentResult />} />
+        </Route>
       </Routes>
     </Router>
   );
-};
+}
 
-
-export default App
+export default App;
