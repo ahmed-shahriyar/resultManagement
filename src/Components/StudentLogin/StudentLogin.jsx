@@ -28,7 +28,7 @@ const StudentLogin = ({ onLogin }) => {
   const res = await axios.get(`http://localhost:5000/api/students/${numericId}`);
   onLogin && onLogin(res.data);
   
-  // ✅ Correct route for student
+  
   navigate(`/student-dashboard/${numericId}/profile`);
   
   setError('');

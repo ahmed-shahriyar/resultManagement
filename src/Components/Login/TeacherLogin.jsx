@@ -20,14 +20,16 @@ const TeacherLogin = ({ onLogin }) => {
       setError('Invalid Student ID. Please enter numbers only.');
       return;
     }
-    try {
-    const res = await axios.get(`http://localhost:5000/api/teachers/${numericId}`);
+   try {
+  const res = await axios.get(`http://localhost:5000/api/teachers/${numericId}`);
   onLogin && onLogin(res.data);
-  navigate(`/dashboard/${numericId}/profile`);
+  navigate(`/teacher-dashboard/${numericId}/profile`);
+
   setError('');
-    } catch (err) {
-      setError('Login failed. Please check your ID and try again.');
-    }
+} catch (err) {
+  setError('Login failed. Please check your ID and try again.');
+}
+
   };
 
   return (
