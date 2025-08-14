@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useParams, Link, useNavigate } from 'react-router-dom';
-import { User, FileText, LogOut } from 'lucide-react'; // icons
+import { User, FileText, LogOut } from 'lucide-react';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
@@ -22,13 +22,13 @@ const StudentDashboard = () => {
         <nav className="dashboard-nav">
           <ul>
             <li>
-              <Link to="profile">
+              <Link to={`/student-dashboard/${studentId}/profile`}>
                 <User size={18} className="nav-icon" />
                 <span>Profile</span>
               </Link>
             </li>
             <li>
-              <Link to="result">
+              <Link to={`/student-dashboard/${studentId}/result`}>
                 <FileText size={18} className="nav-icon" />
                 <span>Result</span>
               </Link>

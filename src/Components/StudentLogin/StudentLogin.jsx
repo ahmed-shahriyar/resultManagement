@@ -24,29 +24,30 @@ const StudentLogin = ({ onLogin }) => {
       return;
     }
 
-   try {
+  try {
   const res = await axios.get(`http://localhost:5000/api/students/${numericId}`);
   onLogin && onLogin(res.data);
-  navigate(`/dashboard/${numericId}/profile`);
+  
+  // ✅ Correct route for student
+  navigate(`/student-dashboard/${numericId}/profile`);
+  
   setError('');
 } catch (err) {
-  console.error('Login error:', err); // Log full error to dev console
+  console.error('Login error:', err);
 
   if (err.response) {
-    // Server responded but with an error status
     if (err.response.status === 404) {
       setError(`Student with ID ${numericId} not found.`);
     } else {
       setError(`Server error (${err.response.status}): ${err.response.data?.error || 'Unknown error'}`);
     }
   } else if (err.request) {
-    // Request made but no response received
     setError('No response from server. Please check your network or try again later.');
   } else {
-    // Other error
     setError(`Unexpected error: ${err.message}`);
   }
 }
+
 
   };
 
