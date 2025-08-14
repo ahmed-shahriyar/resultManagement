@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { User, Book, FileText, LogOut } from 'lucide-react';
 import { Link, Outlet, useParams, useNavigate } from 'react-router-dom';
 import './TeacherDashboard.css';
@@ -9,16 +9,14 @@ const TeacherDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear session (example: localStorage or token)
-    localStorage.removeItem("teacherToken"); // adjust if you store something else
-    // Redirect to login page
+    localStorage.removeItem("teacherToken"); // Adjust if storing something else
     navigate('/');
   };
 
   const menuItems = [
-    { key: 'profile', label: 'Profile', icon: <User size={18} />, path: 'profile' },
-    { key: 'course', label: 'Course', icon: <Book size={18} />, path: 'course' },
-    { key: 'result', label: 'Result Management', icon: <FileText size={18} />, path: 'result' },
+    { key: 'profile', label: 'Profile', icon: <User size={18} />, path: `profile` },
+    { key: 'course', label: 'Course', icon: <Book size={18} />, path: `course` },
+    { key: 'result', label: 'Result Management', icon: <FileText size={18} />, path: `result` },
     { key: 'logout', label: 'Logout', icon: <LogOut size={18} />, action: handleLogout },
   ];
 
@@ -30,7 +28,7 @@ const TeacherDashboard = () => {
           {menuItems.map((item) => (
             <li key={item.key}>
               {item.path ? (
-                <Link to={item.path}>
+                <Link to={`/teacher-dashboard/${teacherId}/${item.path}`}>
                   <button
                     className={`sidebar-btn ${activeTab === item.key ? 'active' : ''}`}
                     onClick={() => setActiveTab(item.key)}
