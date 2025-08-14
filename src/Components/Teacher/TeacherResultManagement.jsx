@@ -15,11 +15,31 @@ const TeacherResultManagement = ({ teacherId }) => {
   const [students, setStudents] = useState([]);
   const [marks, setMarks] = useState({});
 
+  useEffect(() => {
+  const fetchStudents = async () => {
+    if (form.session && form.semester && form.courseCode) {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/result/students?session=${form.session}&semester=${form.semester}&courseCode=${form.courseCode}`
+        );
+        const data = await res.json();
+        setStudents(data);
+      } catch (err) {
+        console.error('Failed to fetch students:', err);
+      }
+    }
+  };
+
+  fetchStudents();
+}, [form.session, form.semester, form.courseCode]);
+
+
  useEffect(() => {
   const fetchCourses = async () => {
     try {
       const res = await fetch(`http://localhost:5000/api/result/teacher/${teacherId}`);
       const data = await res.json();
+      console.log(data);
       setCourses(data);
     } catch (err) {
       console.error('Failed to fetch courses:', err);
