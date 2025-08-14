@@ -12,7 +12,7 @@ const TeacherDashboard = () => {
     // Clear session (example: localStorage or token)
     localStorage.removeItem("teacherToken"); // adjust if you store something else
     // Redirect to login page
-    navigate('/teacher');
+    navigate('/');
   };
 
   const menuItems = [
