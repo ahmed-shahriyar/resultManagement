@@ -47,3 +47,18 @@
 .form-container button:hover {
   background-color: #3a56c0;
 }
+
+.student-mark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.student-mark input {
+  width: 100px;
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
