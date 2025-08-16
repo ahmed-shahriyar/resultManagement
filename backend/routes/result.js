@@ -73,7 +73,7 @@ router.get('/teacher/:teacherId', (req, res) => {
   console.log("Received teacherId:", teacherId);
 
   const sql = `
-    SELECT c.Code, c.Title,  c.Semester
+    SELECT c.Code, c.Title
     FROM Course c
     JOIN teaches tc ON c.Code = tc.Code 
     WHERE tc.T_ID = ?
@@ -89,7 +89,17 @@ router.get('/teacher/:teacherId', (req, res) => {
       return res.status(404).json({ error: 'No courses found for this teacher' });
     }
 
-    res.json(results); // return all matched courses
+    // Convert RowDataPacket to plain objects
+    const courses = results.map(row => ({
+      Code: row.Code,
+      Title: row.Title,
+    }));
+
+    console.log('Courses sent to frontend:', courses);
+
+    // Send the plain JSON instead of raw results
+    res.json(courses);
   });
 });
+
 module.exports = router; 
