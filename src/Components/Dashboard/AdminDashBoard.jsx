@@ -18,10 +18,10 @@ const Card = ({ title, value, icon, color }) => {
 const AdminDashBoard = () => {
   // Stat data for University Result Management
   const stats = [
-    { title: "Total Students", value: "3,520", icon: <Users size={24} color="#fff" />, color: "blue" },
-    { title: "Total Courses", value: "156", icon: <BookOpen size={24} color="#fff" />, color: "green" },
-    { title: "Results Published", value: "1,120", icon: <FileCheck size={24} color="#fff" />, color: "purple" },
-    { title: "Pending Results", value: "245", icon: <Timer size={24} color="#fff" />, color: "orange" },
+    { title: "Total Students", value: "20", icon: <Users size={24} color="#fff" />, color: "blue" },
+    { title: "Total Courses", value: "10", icon: <BookOpen size={24} color="#fff" />, color: "green" },
+    { title: "Results Published", value: "20", icon: <FileCheck size={24} color="#fff" />, color: "purple" },
+    { title: "Pending Results", value: "0", icon: <Timer size={24} color="#fff" />, color: "orange" },
   ];
 
   // Recent activities related to results
