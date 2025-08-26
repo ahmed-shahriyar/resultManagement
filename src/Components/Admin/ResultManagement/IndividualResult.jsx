@@ -4,7 +4,7 @@ import "./IndividualResult.css";
 
 const IndividualResult = () => {
   const [form, setForm] = useState({ studentId: "", semester: "" });
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState([]);
   const [semesters, setSemesters] = useState([]);
 
   // Fetch semesters from backend
@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
     console.log("Sending semester:", form.semester);
 
     const response = await axios.get(
-      `http://localhost:5000/api/result/individual`,
+      `http://localhost:5000/api/course/individual`,
       {
         params: { studentId: form.studentId, semester: form.semester },
       }
@@ -97,16 +97,17 @@ const handleSubmit = async (e) => {
                 <th>Grade</th>
               </tr>
             </thead>
-            <tbody>
-              {result.courses.map((course, index) => (
-                <tr key={index}>
-                  <td>{course.code}</td>
-                  <td>{course.title}</td>
-                  <td>{course.marks}</td>
-                  <td>{course.grade}</td>
-                </tr>
-              ))}
-            </tbody>
+          <tbody>
+  {result.courses.map((course, index) => (
+    <tr key={index}>
+      <td>{course.Code}</td>
+      <td>{course.Title}</td>
+      <td>{course.TotalMarks}</td>
+      <td>{course.Grade}</td>
+    </tr>
+  ))}
+</tbody>
+
           </table>
           <h4 className="gpa">GPA: {result.gpa}</h4>
         </div>

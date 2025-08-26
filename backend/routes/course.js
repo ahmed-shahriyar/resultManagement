@@ -250,5 +250,66 @@ router.get("/batch", (req, res) => {
   });
 });
 
+//Individual
+router.get("/individual", (req, res) => {
+  console.log("Individual");
+
+  const studentId = parseInt(req.query.studentId, 10); // from query
+  const semester = req.query.semester;
+  console.log(studentId, semester);
+
+  if (!studentId || isNaN(studentId)) {
+    return res.status(400).json({ message: "Invalid Student ID" });
+  }
+
+  if (!semester) {
+    return res.status(400).json({ message: "Semester is required" });
+  }
+
+  const query = `
+    SELECT c.Title, c.Semester, t.Code, r.Assignment, r.Mid, r.Final
+    FROM takes t
+    JOIN course c ON t.Code = c.Code
+    LEFT JOIN result r ON t.ID = r.ID AND t.Code = r.Code
+    WHERE t.ID = ? AND c.Semester = ?
+  `;
+
+  db.query(query, [studentId, semester], (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+
+    console.log("DB results:", results);
+
+    // Process results
+    let totalPoints = 0;
+    const processedCourses = results.map(course => {
+      const assignment = course.Assignment || 0;
+      const mid = course.Mid || 0;
+      const final = course.Final || 0;
+      const totalMarks = assignment + mid + final;
+
+      const grade = getLetterGrade(totalMarks);
+      const gradePoint = gradePointsMap[grade];
+
+      totalPoints += gradePoint;
+
+      return {
+        Code: course.Code,
+        Title: course.Title,
+        Assignment: assignment,
+        Mid: mid,
+        Final: final,
+        TotalMarks: totalMarks,
+        Grade: grade,
+        GradePoint: gradePoint
+      };
+    });
+
+    // Calculate GPA (simple average of grade points)
+    const gpa = processedCourses.length > 0 ? (totalPoints / processedCourses.length).toFixed(2) : 0;
+
+    res.json({ courses: processedCourses, gpa });
+  });
+});
+
 
 module.exports = router; 
