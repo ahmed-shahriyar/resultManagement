@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./IndividualResult.css";
 
 const IndividualResult = () => {
   const [form, setForm] = useState({ studentId: "", semester: "" });
@@ -17,7 +18,7 @@ const IndividualResult = () => {
         `/api/results/individual?studentId=${form.studentId}&semester=${form.semester}`
       );
       const data = await response.json();
-      setResult(data); // Set the result to state
+      setResult(data);
     } catch (err) {
       console.error(err);
       alert("Failed to fetch result");
@@ -25,36 +26,38 @@ const IndividualResult = () => {
   };
 
   return (
-    <div className="individual-result">
+    <div className="individual-result-container">
       <h2>Individual Result</h2>
       <form onSubmit={handleSubmit} className="result-form">
-        <div>
+        <div className="form-group">
           <label>Student ID:</label>
           <input
             type="text"
             name="studentId"
             value={form.studentId}
             onChange={handleChange}
+            placeholder="Enter Student ID"
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Semester:</label>
           <input
             type="text"
             name="semester"
             value={form.semester}
             onChange={handleChange}
+            placeholder="Enter Semester"
             required
           />
         </div>
-        <button type="submit">Get Result</button>
+        <button type="submit" className="submit-btn">Get Result</button>
       </form>
 
       {result && result.courses && (
-        <div className="result-table">
+        <div className="result-table-container">
           <h3>Result for Student ID: {form.studentId}</h3>
-          <table border="1">
+          <table className="result-table">
             <thead>
               <tr>
                 <th>Course Code</th>
@@ -74,7 +77,7 @@ const IndividualResult = () => {
               ))}
             </tbody>
           </table>
-          <h4>GPA: {result.gpa}</h4>
+          <h4 className="gpa">GPA: {result.gpa}</h4>
         </div>
       )}
     </div>
