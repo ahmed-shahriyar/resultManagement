@@ -13,6 +13,7 @@ import AddCourse from './Components/Admin/CourseManagement/AddCourse';
 import AllCourse from './Components/Admin/CourseManagement/AllCourse';
 import AssignCourse from './Components/Admin/CourseManagement/AssignCourse';
 import EnroolCourse from './Components/Admin/CourseManagement/EnrollCourse';
+import IndividualResult from './Components/Admin/ResultManagement/IndividualResult';
 
 // Teacher
 import TeacherLogin from './Components/Login/TeacherLogin';
@@ -55,6 +56,7 @@ function App() {
           <Route path="all-course" element={<AllCourse />} />
           <Route path="assign-course" element={<AssignCourse />} />
            <Route path="enrool-course" element={<EnroolCourse/>}/>
+            <Route path="individual-result" element={<IndividualResult />} />
         </Route>
 
         {/* ==================== TEACHER ROUTES ==================== */}
