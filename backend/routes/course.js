@@ -71,11 +71,43 @@ router.get('/teacher-courses/:id', (req, res) => {
   });
 });
 
+// COurse By semester
+router.get('/courses/:semester', (req, res) => {
+  const semester = req.params.semester; // get semester from URL
+
+  const query = `
+    SELECT Code, Title
+    FROM course
+    WHERE semester = ?
+  `;
+
+  db.query(query, [semester], (err, results) => { // use semester here
+    if (err) {
+      console.error("Error fetching courses:", err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+  });
+});
 
 // All Course
 router.get('/courses',(req,res)=>
 {
    const sql = `SELECT * FROM course`;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Fetch error:", err);
+      return res.status(500).json({ error: "Database error." });
+    }
+    res.status(200).json(results); // Return all teacher records as JSON
+  });
+});
+
+//Semester
+router.get('/semesters',(req,res)=>
+{
+   const sql = `SELECT DISTINCT semester FROM course`;
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -116,4 +148,25 @@ router.get('/teacher/:teacherId', (req, res) => {
     res.json(results); // return all matched courses
   });
 });
+
+//Emrool COurse
+
+router.post('/enroll', (req, res) => {
+  const { ID, Semester, Code } = req.body;
+
+  if (!ID || !Code) {
+    return res.status(400).json({ error: 'Student ID and Course Code are required' });
+  }
+
+  const sql = `INSERT INTO takes (ID, Code) VALUES (?, ?)`;
+
+  db.query(sql, [ID, Code], (err, result) => {
+    if (err) {
+      console.error('Database insert error:', err);
+      return res.status(500).json({ error: 'Database error while assigning courses.' });
+    }
+    res.status(200).json({ message: 'Course assigned successfully!' });
+  });
+});
+
 module.exports = router; 
