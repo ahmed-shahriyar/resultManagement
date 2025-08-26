@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   ChevronDown,
   ChevronUp,
+  FileText,
 } from "lucide-react";
 import "./AdminSidebar.css";
 
@@ -16,6 +17,7 @@ const AdminSidebar = () => {
     teacher: false,
     student: false,
     course: false,
+    result: false, // <-- Added for Result Management
   });
 
   const toggleMenu = (menu) => {
@@ -110,6 +112,29 @@ const AdminSidebar = () => {
                 <li>
                   <Link to="enrool-course">
                     <Users size={16} /> Enrool Course
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Result Management Menu */}
+          <li onClick={() => toggleMenu("result")}>
+            <div className="menu-item">
+              <FileText size={20} />
+              <span>Result Management</span>
+              {openMenus.result ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </div>
+            {openMenus.result && (
+              <ul className="submenu">
+                <li>
+                  <Link to="individual-result">
+                    <FileText size={16} /> Individual Result
+                  </Link>
+                </li>
+                <li>
+                  <Link to="batch-result">
+                    <FileText size={16} /> Batch-wise Result
                   </Link>
                 </li>
               </ul>
