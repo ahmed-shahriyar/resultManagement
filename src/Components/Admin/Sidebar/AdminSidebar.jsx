@@ -107,6 +107,11 @@ const AdminSidebar = () => {
                     <Users size={16} /> Assign Course
                   </Link>
                 </li>
+                <li>
+                  <Link to="enrool-course">
+                    <Users size={16} /> Enrool Course
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
