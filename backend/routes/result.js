@@ -142,4 +142,56 @@ router.post("/marks", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
+
+
+// Get Individula Result
+// Helper: Get letter grade
+const getLetterGrade = (total) => {
+  if (total >= 80) return 'A+';
+  if (total >= 75) return 'A';
+  if (total >= 70) return 'A-';
+  if (total >= 65) return 'B+';
+  if (total >= 60) return 'B';
+  if (total >= 55) return 'B-';
+  if (total >= 50) return 'C+';
+  if (total >= 45) return 'C';
+  if (total >= 40) return 'D';
+  return 'F';
+};
+
+const gradePointsMap = {
+  'A+': 4.00, 'A': 3.75, 'A-': 3.50,
+  'B+': 3.25, 'B': 3.00, 'B-': 2.75,
+  'C+': 2.50, 'C': 2.25, 'D': 2.00, 'F': 0.00
+};
+
+// API: Fetch individual student result
+router.get("/individual", (req, res) => {
+   const studentId = parseInt(req.query.studentId);
+  const semester = req.query.semester;
+
+  // Check for invalid ID
+  if (!studentId || isNaN(studentId)) {
+    return res.status(400).json({ message: "Invalid Student ID" });
+  }
+
+  if (!semester) {
+    return res.status(400).json({ message: "Semester is required" });
+  }
+
+  const query = `
+    SELECT c.Title, c.Semester, t.Code, r.Assignment, r.Mid, r.Final
+    FROM takes t
+    JOIN course c ON t.Code = c.Code
+    LEFT JOIN result r ON t.ID = r.ID AND t.Code = r.Code
+    WHERE t.ID = ? AND c.Semester = ?
+  `;
+
+  db.query(query, [studentId, semester], (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+    res.json({ courses: results });
+  });
+});
+
+// API: Fetch all semesters for
 module.exports = router; 

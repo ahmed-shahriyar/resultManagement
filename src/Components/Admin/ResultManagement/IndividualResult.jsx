@@ -1,29 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./IndividualResult.css";
 
 const IndividualResult = () => {
   const [form, setForm] = useState({ studentId: "", semester: "" });
   const [result, setResult] = useState(null);
+  const [semesters, setSemesters] = useState([]);
+
+  // Fetch semesters from backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/course/semesters")
+      .then((res) => setSemesters(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Example: Fetch result from API
-    try {
-      const response = await fetch(
-        `/api/results/individual?studentId=${form.studentId}&semester=${form.semester}`
-      );
-      const data = await response.json();
-      setResult(data);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to fetch result");
-    }
-  };
+  if (!form.studentId || !form.semester) {
+    alert("Student ID and Semester are required");
+    return;
+  }
+
+  try {
+    console.log("Sending studentId:", form.studentId);
+    console.log("Sending semester:", form.semester);
+
+    const response = await axios.get(
+      `http://localhost:5000/api/result/individual`,
+      {
+        params: { studentId: form.studentId, semester: form.semester },
+      }
+    );
+
+    setResult(response.data);
+  } catch (err) {
+    console.error(err);
+    alert("Failed to fetch result");
+  }
+};
+
 
   return (
     <div className="individual-result-container">
@@ -31,27 +52,37 @@ const IndividualResult = () => {
       <form onSubmit={handleSubmit} className="result-form">
         <div className="form-group">
           <label>Student ID:</label>
-          <input
-            type="text"
-            name="studentId"
-            value={form.studentId}
-            onChange={handleChange}
-            placeholder="Enter Student ID"
-            required
-          />
+         <input
+  type="number"
+  name="studentId"
+  value={form.studentId}
+  onChange={(e) =>
+    setForm({ ...form, studentId: parseInt(e.target.value) || "" })
+  }
+  placeholder="Enter Student ID"
+  required
+/>
+
         </div>
         <div className="form-group">
           <label>Semester:</label>
-          <input
-            type="text"
+          <select
             name="semester"
             value={form.semester}
             onChange={handleChange}
-            placeholder="Enter Semester"
             required
-          />
+          >
+            <option value="">Select Semester</option>
+            {semesters.map((s) => (
+              <option key={s.semester} value={s.semester}>
+                {s.semester}
+              </option>
+            ))}
+          </select>
         </div>
-        <button type="submit" className="submit-btn">Get Result</button>
+        <button type="submit" className="submit-btn">
+          Get Result
+        </button>
       </form>
 
       {result && result.courses && (
@@ -70,7 +101,7 @@ const IndividualResult = () => {
               {result.courses.map((course, index) => (
                 <tr key={index}>
                   <td>{course.code}</td>
-                  <td>{course.name}</td>
+                  <td>{course.title}</td>
                   <td>{course.marks}</td>
                   <td>{course.grade}</td>
                 </tr>
