@@ -37,20 +37,28 @@ router.post('/result/add-multiple', (req, res) => {
 
 
 router.get('/:studentId', (req, res) => {
-  const studentId = Number(req.params.studentId);
+  // Convert studentId to integer
+  const studentId = parseInt(req.params.studentId, 10);
   const semester = req.query.semester;
+
   console.log('StudentId:', studentId, 'Semester:', semester);
 
+  // Check if studentId is a valid integer
+  if (isNaN(studentId)) {
+    return res.status(400).json({ error: 'Invalid student ID' });
+  }
 
+  // Check if semester is provided
   if (!semester) {
     return res.status(400).json({ error: 'Semester is required' });
   }
 
-  const sql = 
-  `  SELECT *
-FROM course c JOIN result r ON c.Code = r.Code 
-WHERE r.ID =? AND c.semester =?`;
-  ;
+  const sql = `
+    SELECT *
+    FROM course c
+    JOIN result r ON c.Code = r.Code 
+    WHERE r.ID = ? AND c.semester = ?
+  `;
 
   db.query(sql, [studentId, semester], (err, results) => {
     if (err) {
@@ -61,6 +69,7 @@ WHERE r.ID =? AND c.semester =?`;
     res.json(results);
   });
 });
+
 
 //
 router.get('/teacher/:teacherId', (req, res) => {
@@ -194,4 +203,63 @@ router.get("/individual", (req, res) => {
 });
 
 // API: Fetch all semesters for
+
+// Fetch all students' results for a semester
+router.get("/batch", (req, res) => {
+  const semester = req.query.semester;
+  console.log(semester);
+
+  if (!semester) {
+    return res.status(400).json({ message: "Semester is required" });
+  }
+
+  const query = `
+    SELECT s.ID AS studentId, s.Name AS studentName, c.Code AS courseCode, c.Title AS courseTitle,
+           r.Assignment, r.Mid, r.Final
+    FROM student s
+    JOIN takes t ON s.ID = t.ID
+    JOIN course c ON t.Code = c.Code
+    LEFT JOIN result r ON t.ID = r.ID AND t.Code = r.Code
+    WHERE c.Semester = ?
+    ORDER BY s.ID, c.Code
+  `;
+
+  db.query(query, [semester], (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+
+    // Group results by student
+    const batchResults = {};
+    results.forEach(r => {
+      const totalMarks = (r.Assignment || 0) + (r.Mid || 0) + (r.Final || 0);
+      const grade = getLetterGrade(totalMarks);
+
+      if (!batchResults[r.studentId]) {
+        batchResults[r.studentId] = {
+          studentId: r.studentId,
+          studentName: r.studentName,
+          courses: [],
+          gpa: 0
+        };
+      }
+
+      batchResults[r.studentId].courses.push({
+        code: r.courseCode,
+        title: r.courseTitle,
+        marks: totalMarks,
+        grade
+      });
+    });
+
+    // Calculate GPA for each student
+    Object.values(batchResults).forEach(student => {
+      const totalPoints = student.courses.reduce(
+        (sum, c) => sum + gradePointsMap[c.grade], 0
+      );
+      student.gpa = (totalPoints / student.courses.length).toFixed(2);
+    });
+
+    res.json(Object.values(batchResults));
+  });
+});
+
 module.exports = router; 

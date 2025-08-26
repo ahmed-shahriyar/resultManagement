@@ -169,4 +169,86 @@ router.post('/enroll', (req, res) => {
   });
 });
 
+
+
+
+//Batch result
+
+const getLetterGrade = (total) => {
+  if (total >= 80) return 'A+';
+  if (total >= 75) return 'A';
+  if (total >= 70) return 'A-';
+  if (total >= 65) return 'B+';
+  if (total >= 60) return 'B';
+  if (total >= 55) return 'B-';
+  if (total >= 50) return 'C+';
+  if (total >= 45) return 'C';
+  if (total >= 40) return 'D';
+  return 'F';
+};
+
+const gradePointsMap = {
+  'A+': 4.00, 'A': 3.75, 'A-': 3.50,
+  'B+': 3.25, 'B': 3.00, 'B-': 2.75,
+  'C+': 2.50, 'C': 2.25, 'D': 2.00, 'F': 0.00
+};
+
+router.get("/batch", (req, res) => {
+  const semester = req.query.semester;
+  console.log(semester);
+
+  if (!semester) {
+    return res.status(400).json({ message: "Semester is required" });
+  }
+
+  const query = `
+    SELECT s.ID AS studentId, s.Name AS studentName, c.Code AS courseCode, c.Title AS courseTitle,
+           r.Assignment, r.Mid, r.Final
+    FROM student s
+    JOIN takes t ON s.ID = t.ID
+    JOIN course c ON t.Code = c.Code
+    LEFT JOIN result r ON t.ID = r.ID AND t.Code = r.Code
+    WHERE c.Semester = ?
+    ORDER BY s.ID, c.Code
+  `;
+
+  db.query(query, [semester], (err, results) => {
+    if (err) return res.status(500).json({ message: err.message });
+
+    // Group results by student
+    const batchResults = {};
+    results.forEach(r => {
+      const totalMarks = (r.Assignment || 0) + (r.Mid || 0) + (r.Final || 0);
+      const grade = getLetterGrade(totalMarks);
+
+      if (!batchResults[r.studentId]) {
+        batchResults[r.studentId] = {
+          studentId: r.studentId,
+          studentName: r.studentName,
+          courses: [],
+          gpa: 0
+        };
+      }
+
+      batchResults[r.studentId].courses.push({
+        code: r.courseCode,
+        title: r.courseTitle,
+        marks: totalMarks,
+        grade
+      });
+    });
+
+    // Calculate GPA for each student
+    Object.values(batchResults).forEach(student => {
+      const totalPoints = student.courses.reduce(
+        (sum, c) => sum + gradePointsMap[c.grade], 0
+      );
+      student.gpa = (totalPoints / student.courses.length).toFixed(2);
+    });
+
+    res.json(Object.values(batchResults));
+  });
+});
+
+
 module.exports = router; 
