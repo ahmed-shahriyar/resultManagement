@@ -14,6 +14,7 @@ import AllCourse from './Components/Admin/CourseManagement/AllCourse';
 import AssignCourse from './Components/Admin/CourseManagement/AssignCourse';
 import EnroolCourse from './Components/Admin/CourseManagement/EnrollCourse';
 import IndividualResult from './Components/Admin/ResultManagement/IndividualResult';
+import BatchResult from './Components/Admin/ResultManagement/BatchResult';
 
 // Teacher
 import TeacherLogin from './Components/Login/TeacherLogin';
@@ -57,6 +58,7 @@ function App() {
           <Route path="assign-course" element={<AssignCourse />} />
            <Route path="enrool-course" element={<EnroolCourse/>}/>
             <Route path="individual-result" element={<IndividualResult />} />
+             <Route path="batch-result" element={<BatchResult />} />
         </Route>
 
         {/* ==================== TEACHER ROUTES ==================== */}
