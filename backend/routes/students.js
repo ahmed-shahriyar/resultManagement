@@ -31,13 +31,31 @@ router.get('/semesters/:id', (req, res) => {
 // Get student by ID (GET /api/students/:id)
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
-  console.log("Backend received ID:", id);
 
   if (isNaN(id)) {
     return res.status(400).json({ error: 'Invalid student ID' });
   }
 
-  db.query('SELECT * FROM student WHERE ID = ?', [id], (err, result) => {
+  const query = `
+   SELECT 
+  s.ID AS student_id,
+  s.Name AS student_name,
+  s.Session,
+  s.Phone,
+  s.Email,
+  c.Code AS course_code,
+  c.Title AS course_title,
+  t.Name AS teacher_name
+FROM student s
+JOIN takes tk ON s.ID = tk.ID
+JOIN course c ON tk.Code = c.Code
+JOIN teaches th ON c.Code = th.Code
+JOIN teacher t ON th.T_ID = t.T_ID
+WHERE s.ID = ?;
+
+  `;
+
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error('Database error:', err);
       return res.status(500).json({ error: 'Database error', details: err });
@@ -45,7 +63,22 @@ router.get('/:id', (req, res) => {
     if (result.length === 0) {
       return res.status(404).json({ error: 'Student not found' });
     }
-    res.json(result[0]);
+
+    // Format response: one student with array of courses+teachers
+    const student = {
+      ID: result[0].ID,
+      Name: result[0].Name,
+      Session: result[0].Session,
+      Phone: result[0].Phone,
+      Email: result[0].Email,
+      Courses: result.map(r => ({
+        Code: r.CourseCode,
+        Title: r.CourseTitle,
+        Teacher: r.TeacherName
+      }))
+    };
+
+    res.json(student);
   });
 });
 

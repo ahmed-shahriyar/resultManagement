@@ -4,15 +4,62 @@
 
 .search-input {
   padding: 8px;
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  width: 250px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
-.student-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.student-table th,
+.student-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.student-table th {
+  background-color: #6a5acd;
+  color: white;
+}
+
+.student-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.student-table tr:hover {
+  background-color: #f1f1f1;
+}
+.course-badge {
+  background: #6a5acd;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin: 2px;
+  display: inline-block;
+  font-size: 12px;
+}
+.course-item {
+  margin: 4px 0;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f9f9ff;
+  font-size: 14px;
+}
+
+.course-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.course-teacher {
+  color: #6a5acd;
+  font-style: italic;
+  margin-left: 6px;
 }

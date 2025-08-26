@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import StudentCard from "./StudentCard";
 import "./AllStudent.css";
 
 const AllStudent = () => {
@@ -19,6 +18,7 @@ const AllStudent = () => {
     fetchStudents();
   }, []);
 
+
   const filtered = students.filter((s) =>
     s.Name.toLowerCase().includes(search.toLowerCase())
   );
@@ -33,11 +33,43 @@ const AllStudent = () => {
         onChange={(e) => setSearch(e.target.value)}
         className="search-input"
       />
-      <div className="student-list">
-        {filtered.map((student) => (
-          <StudentCard key={student.ID} student={student} />
-        ))}
+
+      <table className="student-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Session</th>
+            <th>Phone</th>
+            <th>Courses</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtered.map((student) => (
+            <tr key={student.ID}>
+              <td>{student.ID}</td>
+              <td>{student.Name}</td>
+              <td>{student.Session}</td>
+              <td>{student.Phone}</td>
+           <td>
+  {Array.isArray(student.Courses) && student.Courses.length > 0 ? (
+    student.Courses.map((c, i) => (
+      <div key={i} className="course-item">
+        <span className="course-title">{c.Title} ({c.Code})</span>
+        <span className="course-teacher"> — {c.Teacher}</span>
       </div>
+    ))
+  ) : (
+    <em>No Courses Assigned</em>
+  )}
+</td>
+
+              <td>{student.Email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
