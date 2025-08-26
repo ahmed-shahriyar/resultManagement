@@ -12,6 +12,7 @@ import AllTeacher from './Components/Admin/TeacherManagement/AllTeacher';
 import AddCourse from './Components/Admin/CourseManagement/AddCourse';
 import AllCourse from './Components/Admin/CourseManagement/AllCourse';
 import AssignCourse from './Components/Admin/CourseManagement/AssignCourse';
+import EnroolCourse from './Components/Admin/CourseManagement/EnrollCourse';
 
 // Teacher
 import TeacherLogin from './Components/Login/TeacherLogin';
@@ -53,6 +54,7 @@ function App() {
           <Route path="add-course" element={<AddCourse />} />
           <Route path="all-course" element={<AllCourse />} />
           <Route path="assign-course" element={<AssignCourse />} />
+           <Route path="enrool-course" element={<EnroolCourse/>}/>
         </Route>
 
         {/* ==================== TEACHER ROUTES ==================== */}

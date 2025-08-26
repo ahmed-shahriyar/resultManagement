@@ -9,7 +9,8 @@ import AllStudent from "../StudentManagement/AllStudent"
 import AddCourse from "../CourseManagement/AddCourse"
 import AllCourse from "../CourseManagement/AllCourse"
 import AssignCourse from "../CourseManagement/AssignCourse"
-import EnrollCourse from "../CourseManagement/EnrollCourse"
+import AssignCourse from "../CourseManagement/EnrollCourse"
+
 
 
 
@@ -34,7 +35,8 @@ const AdminRoutes = () => {
           <Route path="/add-course" element={<AddCourse/>} />
            <Route path="/all-course" element={<AllCourse/>} />
            <Route path="/assign-course" element={<AssignCourse/>} />
-           <Route path="/enrool-course" element={<EnrollCourse/>} />
+           <Route path="/enrool-course" element={<EnroolCourse/>}/>
+         
       </Routes>
       </main>
       </div>
