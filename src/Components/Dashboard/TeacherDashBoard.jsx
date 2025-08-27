@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Book, FileText, LogOut } from 'lucide-react';
+import { User, Book, FileText, LogOut, Eye } from 'lucide-react'; // 👈 Added Eye icon
 import { Link, Outlet, useParams, useNavigate } from 'react-router-dom';
 import './TeacherDashboard.css';
 
@@ -17,6 +17,7 @@ const TeacherDashboard = () => {
     { key: 'profile', label: 'Profile', icon: <User size={18} />, path: `profile` },
     { key: 'course', label: 'Course', icon: <Book size={18} />, path: `course` },
     { key: 'result', label: 'Result Management', icon: <FileText size={18} />, path: `result` },
+    { key: 'view-result', label: 'View Result', icon: <Eye size={18} />, path: `view-result` }, // 👈 New menu item
     { key: 'logout', label: 'Logout', icon: <LogOut size={18} />, action: handleLogout },
   ];
 
