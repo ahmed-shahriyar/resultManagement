@@ -5,6 +5,7 @@ import "./TeacherResultManagement.css";
 
 const TeacherResultManagement = () => {
   const { teacherId } = useParams();
+ 
 
   const [form, setForm] = useState({
     session: "",
@@ -15,6 +16,7 @@ const TeacherResultManagement = () => {
 
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
+     const [semesters, setSemesters] = useState([]);
   const [marks, setMarks] = useState({}); // { studentId: mark }
   const [loadingCourses, setLoadingCourses] = useState(false);
   const [loadingStudents, setLoadingStudents] = useState(false);
@@ -30,6 +32,12 @@ const TeacherResultManagement = () => {
         .finally(() => setLoadingCourses(false));
     }
   }, [teacherId]);
+    useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/course/semesters")
+      .then((res) => setSemesters(res.data))
+      .catch((err) => console.error(err));
+  }, []);
 
   // Fetch students when session or course changes
   useEffect(() => {
@@ -84,20 +92,27 @@ const TeacherResultManagement = () => {
         <label>Select Session</label>
         <select name="session" value={form.session} onChange={handleChange} required>
           <option value="">--Select--</option>
+            <option value="2021-22">2021-22</option>
           <option value="2022-23">2022-23</option>
           <option value="2023-24">2023-24</option>
           <option value="2024-25">2024-25</option>
         </select>
 
         {/* Semester */}
-        <label>Select Semester</label>
-        <select name="semester" value={form.semester} onChange={handleChange} required>
-          <option value="">--Select--</option>
-          <option value="1st">1st</option>
-          <option value="2nd">2nd</option>
-          <option value="3rd">3rd</option>
-          <option value="4th">4th</option>
-        </select>
+         <label>Semester:</label>
+          <select
+            name="semester"
+            value={form.semester}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Semester</option>
+            {semesters.map((s) => (
+              <option key={s.semester} value={s.semester}>
+                {s.semester}
+              </option>
+            ))}
+          </select>
 
         {/* Course */}
         <label>Select Course</label>
