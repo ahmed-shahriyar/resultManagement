@@ -22,6 +22,8 @@ import TeacherDashboard from './Components/Dashboard/TeacherDashboard';
 import TeacherProfile from './Components/Teacher/TeacherProfile';
 import TeacherResultManagement from './Components/Teacher/TeacherResultManagement';
 import TeacherCourses from './Components/Teacher/TeacherCourses';
+import ViewResult from './Components/Teacher/ViewResult';
+
 
 // Student
 import StudentLogin from './Components/StudentLogin/StudentLogin';
@@ -67,6 +69,7 @@ function App() {
           <Route path="profile" element={<TeacherProfile />} />
           <Route path="result" element={<TeacherResultManagement />} />
           <Route path="course" element={<TeacherCourses />} />
+          <Route path="view-result" element={<ViewResult />} />
         </Route>
 
         {/* ==================== STUDENT ROUTES ==================== */}
