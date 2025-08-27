@@ -311,5 +311,50 @@ router.get("/individual", (req, res) => {
   });
 });
 
+//Add mark
+router.get("/students", (req, res) => {
+  const { session, course } = req.query;
+  console.log(course);
+  if (!session || !course) {
+    return res.status(400).json({ error: "Session and course are required" });
+  }
+
+  const query = "SELECT s.ID as id , Name as name FROM student s JOIN takes t ON s.ID =t.ID  WHERE Code = ?";
+  db.query(query, [ course], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    console.log(results);
+    res.json(results);
+  });
+});
+
+
+// Add student Mark
+router.post("/marks", (req, res) => {
+  const { course, examType, marks } = req.body; // marks = { studentId: mark }
+   console.log(req.body);
+
+  const queries = Object.keys(marks).map(studentId => {
+    const mark = Number(marks[studentId]);
+    if (isNaN(mark) || mark < 0 || mark > 100) return null;
+
+    // UPSERT query
+    return new Promise((resolve, reject) => {
+      const sql = `
+        INSERT INTO result (ID, Code, ${examType})
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE ${examType} = ?
+      `;
+      db.query(sql, [studentId, course, mark, mark], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+  }).filter(q => q !== null);
+
+  Promise.all(queries)
+    .then(() => res.json({ message: `${examType} marks saved successfully!` }))
+    .catch(err => res.status(500).json({ error: err.message }));
+});
+
 
 module.exports = router; 

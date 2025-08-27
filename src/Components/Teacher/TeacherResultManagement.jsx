@@ -44,7 +44,7 @@ const TeacherResultManagement = () => {
     if (form.session && form.course) {
       setLoadingStudents(true);
       axios
-        .get(`http://localhost:5000/api/results/students`, {
+        .get(`http://localhost:5000/api/course/students`, {
           params: { session: form.session, course: form.course },
         })
         .then((res) => {
@@ -75,7 +75,7 @@ const TeacherResultManagement = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/results/marks", {
+      .post("http://localhost:5000/api/course/marks", {
         course: form.course,
         examType: form.examType,
         marks,
