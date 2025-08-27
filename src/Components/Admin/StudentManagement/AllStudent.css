@@ -63,3 +63,36 @@
   font-style: italic;
   margin-left: 6px;
 }
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.session-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.session-select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+

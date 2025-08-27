@@ -315,12 +315,13 @@ router.get("/individual", (req, res) => {
 //Add mark
 router.get("/students", (req, res) => {
   const { session, course } = req.query;
-  console.log(course);
+  
+ 
   if (!session || !course) {
     return res.status(400).json({ error: "Session and course are required" });
   }
   const query = "SELECT s.ID as id , Name as name FROM student s JOIN takes t ON s.ID =t.ID  WHERE s.session =? AND t.Code = ?";
-  db.query(query, [ course], (err, results) => {
+  db.query(query, [session, course], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     console.log(results);
     res.json(results);

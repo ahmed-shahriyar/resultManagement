@@ -20,7 +20,7 @@ const AddCourse = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/add-course", course);
+      await axios.post("http://localhost:5000/api/course/add-course", course);
       setMessage("Course added successfully!");
       setCourse({
         Code: "",
