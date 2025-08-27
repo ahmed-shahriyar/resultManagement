@@ -331,7 +331,7 @@ router.get("/students", (req, res) => {
 // Add student Mark
 router.post("/marks", (req, res) => {
   const { course, examType, marks } = req.body; // marks = { studentId: mark }
-   console.log(req.body);
+  
 
   const queries = Object.keys(marks).map(studentId => {
     const mark = Number(marks[studentId]);
@@ -354,6 +354,47 @@ router.post("/marks", (req, res) => {
   Promise.all(queries)
     .then(() => res.json({ message: `${examType} marks saved successfully!` }))
     .catch(err => res.status(500).json({ error: err.message }));
+});
+
+
+
+//Teacher result
+router.get("/results", (req, res) => {
+  const { course, session } = req.query;
+
+  if (!course || !session) {
+    return res.status(400).json({ error: "Course and session are required" });
+  }
+
+  const sql = `
+    SELECT s.ID, s.Name, r.Assignment, r.Mid, r.Final
+    FROM result r
+    JOIN student s ON r.ID = s.ID
+    WHERE r.Code = ? AND s.session = ?
+  `;
+  db.query(sql, [course, session], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    // ✅ Compute total, grade, and grade point
+    const finalResult = result.map(r => {
+      const assignment = r.Assignment || 0;
+      const midterm = r.Midterm || 0;
+      const finalExam = r.Final || 0;
+      const total = assignment + midterm + finalExam;
+
+      const grade = getLetterGrade(total);
+      const gradePoint = gradePointsMap[grade];
+
+      return {
+        ...r,
+        Total: total,
+        Grade: grade,
+        GradePoint: gradePoint
+      };
+    });
+
+    res.json(finalResult);
+  });
 });
 
 
