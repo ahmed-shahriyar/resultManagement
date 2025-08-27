@@ -22,7 +22,7 @@ const AddTeacher = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/add-teacher", teacher);
+      await axios.post("http://localhost:5000/api/teachers/add-teacher", teacher);
       setMessage("Teacher added successfully!");
       setTeacher({
         T_ID: "",

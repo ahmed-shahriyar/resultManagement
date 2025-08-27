@@ -21,7 +21,7 @@ const AddStudent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/add-student", student);
+      await axios.post("http://localhost:5000/api/students/add-student", student);
       setMessage("Student added successfully!");
       setStudent({
         ID: "",
