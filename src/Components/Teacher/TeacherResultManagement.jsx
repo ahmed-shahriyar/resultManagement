@@ -92,6 +92,7 @@ const TeacherResultManagement = () => {
         <label>Select Session</label>
         <select name="session" value={form.session} onChange={handleChange} required>
           <option value="">--Select--</option>
+           <option value="2020-21">2020-21</option>
             <option value="2021-22">2021-22</option>
           <option value="2022-23">2022-23</option>
           <option value="2023-24">2023-24</option>
