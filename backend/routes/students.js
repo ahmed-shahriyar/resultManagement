@@ -3,14 +3,45 @@ const router = express.Router();
 const db = require('../db');
 
 // Get all students (GET /api/students)
-router.get('/', (req, res) => {
-  const sql = `SELECT * FROM student`;
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error("Fetch error:", err);
-      return res.status(500).json({ error: "Database error." });
-    }
-    res.status(200).json(results);
+router.get("/", (req, res) => {
+  const sql = `
+   SELECT s.ID, s.Name, s.Session, s.Phone, s.Email,
+           c.Code, c.Title, t.T_ID as TeacherID, tr.Name as Teacher
+    FROM student s
+    LEFT JOIN takes tk ON s.ID = tk.ID
+    LEFT JOIN course c ON tk.Code = c.Code
+    LEFT JOIN teaches t ON c.Code = t.Code
+    LEFT JOIN teacher tr ON t.T_ID = tr.T_ID
+    ORDER BY s.ID;
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    // ✅ Group courses under each student
+    const studentsMap = {};
+    rows.forEach((row) => {
+      if (!studentsMap[row.ID]) {
+        studentsMap[row.ID] = {
+          ID: row.ID,
+          Name: row.Name,
+          Session: row.Session,
+          Phone: row.Phone,
+          Email: row.Email,
+          Courses: []
+        };
+      }
+
+      if (row.Code) {
+        studentsMap[row.ID].Courses.push({
+          Code: row.Code,
+          Title: row.Title,
+          Teacher: row.Teacher || "N/A"
+        });
+      }
+    });
+
+    res.json(Object.values(studentsMap));
   });
 });
 
