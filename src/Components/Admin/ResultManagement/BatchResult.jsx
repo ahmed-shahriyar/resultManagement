@@ -5,6 +5,7 @@ import "./BatchResult.css";
 const BatchResult = () => {
   const [semester, setSemester] = useState("");
   const [semesters, setSemesters] = useState([]);
+  const [session,setSession] =useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +31,7 @@ const BatchResult = () => {
     setLoading(true);
     try {
       const res = await axios.get("http://localhost:5000/api/course/batch", {
-        params: { semester: semester.trim() }
+        params: { semester: semester.trim() ,session}
       });
       setResults(res.data);
     } catch (err) {
@@ -61,6 +62,18 @@ const BatchResult = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div class="form-group">
+          <label>Select Session</label>
+        <select name="session" value={session}   onChange={(e) => setSession(e.target.value)}
+             required>
+          <option value="">--Select--</option>
+           <option value="2020-21">2020-21</option>
+            <option value="2021-22">2021-22</option>
+          <option value="2022-23">2022-23</option>
+          <option value="2023-24">2023-24</option>
+          <option value="2024-25">2024-25</option>
+        </select>
         </div>
         <button type="submit" className="submit-btn">Get Batch Result</button>
       </form>

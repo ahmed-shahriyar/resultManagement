@@ -195,7 +195,8 @@ const gradePointsMap = {
 
 router.get("/batch", (req, res) => {
   const semester = req.query.semester;
-  console.log(semester);
+   const session = req.query.session;
+  
 
   if (!semester) {
     return res.status(400).json({ message: "Semester is required" });
@@ -208,11 +209,11 @@ router.get("/batch", (req, res) => {
     JOIN takes t ON s.ID = t.ID
     JOIN course c ON t.Code = c.Code
     LEFT JOIN result r ON t.ID = r.ID AND t.Code = r.Code
-    WHERE c.Semester = ?
+    WHERE c.Semester = ? AND s.Session =?
     ORDER BY s.ID, c.Code
   `;
 
-  db.query(query, [semester], (err, results) => {
+  db.query(query, [semester,session], (err, results) => {
     if (err) return res.status(500).json({ message: err.message });
 
     // Group results by student
