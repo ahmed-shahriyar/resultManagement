@@ -1,5 +1,5 @@
 .form-container {
-  max-width: 400px;
+  max-width: 600px;
   margin: 30px auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -56,8 +56,8 @@
 }
 
 .student-mark input {
-  width: 100px;
-  padding: 5px;
+  width: 200px;
+  padding: 10px;
   border-radius: 6px;
   border: 1px solid #bbb;
 }

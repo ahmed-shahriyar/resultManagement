@@ -329,23 +329,28 @@ router.get("/students", (req, res) => {
 });
 
 
-// Add student Mark
 router.post("/marks", (req, res) => {
-  const { course, examType, marks } = req.body; // marks = { studentId: mark }
-  
+  const { course, marks } = req.body; 
+  // marks = { studentId: { assignment, mid, final } }
 
   const queries = Object.keys(marks).map(studentId => {
-    const mark = Number(marks[studentId]);
-    if (isNaN(mark) || mark < 0 || mark > 100) return null;
+    const { assignment, mid, final } = marks[studentId];
 
-    // UPSERT query
+    // Validate values
+    if ([assignment, mid, final].some(m => isNaN(m) || m < 0 || m > 100)) {
+      return null;
+    }
+
     return new Promise((resolve, reject) => {
       const sql = `
-        INSERT INTO result (ID, Code, ${examType})
-        VALUES (?, ?, ?)
-        ON DUPLICATE KEY UPDATE ${examType} = ?
+        INSERT INTO result (ID, Code, Assignment, Mid, Final)
+        VALUES (?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          Assignment = VALUES(Assignment),
+          Mid = VALUES(Mid),
+          Final = VALUES(Final)
       `;
-      db.query(sql, [studentId, course, mark, mark], (err, result) => {
+      db.query(sql, [studentId, course, assignment, mid, final], (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -353,7 +358,7 @@ router.post("/marks", (req, res) => {
   }).filter(q => q !== null);
 
   Promise.all(queries)
-    .then(() => res.json({ message: `${examType} marks saved successfully!` }))
+    .then(() => res.json({ message: "All marks saved successfully!" }))
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
