@@ -335,6 +335,7 @@ router.post("/marks", (req, res) => {
 
   const queries = Object.keys(marks).map(studentId => {
     const { assignment, mid, final } = marks[studentId];
+    console.log(req.body);
 
     // Validate values
     if ([assignment, mid, final].some(m => isNaN(m) || m < 0 || m > 100)) {
@@ -342,14 +343,15 @@ router.post("/marks", (req, res) => {
     }
 
     return new Promise((resolve, reject) => {
-      const sql = `
-        INSERT INTO result (ID, Code, Assignment, Mid, Final)
-        VALUES (?, ?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE
-          Assignment = VALUES(Assignment),
-          Mid = VALUES(Mid),
-          Final = VALUES(Final)
-      `;
+     const sql = `
+  INSERT INTO result (ID, Code, Assignment, Mid, Final)
+  VALUES (?, ?, ?, ?, ?)
+  ON DUPLICATE KEY UPDATE
+    Assignment = VALUES(Assignment),
+    Mid = VALUES(Mid),
+    Final = VALUES(Final)
+`;
+
       db.query(sql, [studentId, course, assignment, mid, final], (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -373,7 +375,7 @@ router.get("/results", (req, res) => {
   }
 
   const sql = `
-    SELECT s.ID, s.Name, r.Assignment, r.Mid, r.Final
+    SELECT s.ID, s.Name, r.Assignment, r.Mid as Midterm, r.Final
     FROM result r
     JOIN student s ON r.ID = s.ID
     WHERE r.Code = ? AND s.session = ?
